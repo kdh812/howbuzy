@@ -271,6 +271,16 @@
     </style>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TWQNDJW8"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="container">
       <header class="header">
         <h1 class="main-title">거기... 어때요?</h1>
@@ -351,6 +361,26 @@
                     </div>
                 </div>
             `
+
+        // === GA 이벤트 트래킹 추가 부분 ===
+        const chatButton = card.querySelector('.chat-button')
+        if (chatButton) {
+          chatButton.addEventListener('click', function () {
+            // 혹시 몰라서 방어적으로 dataLayer 보장
+            window.dataLayer = window.dataLayer || []
+
+            window.dataLayer.push({
+              event: 'chat_link_click', // GTM에서 잡을 이벤트 이름
+              chat_id: landmark.id || null,
+              chat_name: landmark.name,
+              chat_location: landmark.location,
+              chat_participants: landmark.participants,
+              chat_link: landmark.chat_link || 'https://open.kakao.com/o/gDerDQug',
+            })
+          })
+        }
+        // === 여기까지 ===
+
         return card
       }
 
@@ -406,15 +436,5 @@
         loadLandmarks()
       }
     </script>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-TWQNDJW8"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>
